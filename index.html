@@ -27,7 +27,7 @@
             line-height: 1.6;
         }
 
-        /* Top Bar Navigation */
+        /* Circular Navigation */
         #nav-toggle {
             position: fixed;
             top: 30px;
@@ -35,9 +35,9 @@
             width: 60px;
             height: 60px;
             background: var(--om84-navy);
-            border-radius: 12px;
+            border-radius: 50%;
             cursor: pointer;
-            z-index: 1001;
+            z-index: 1000;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -46,131 +46,66 @@
         }
 
         #nav-toggle:hover {
-            transform: scale(1.05);
+            transform: scale(1.1);
             background: var(--om84-accent);
         }
 
-        #nav-toggle.active {
-            background: var(--om84-accent);
+        #nav-toggle span {
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
         }
 
-        /* Hamburger Icon */
-        .hamburger {
-            width: 30px;
-            height: 20px;
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
-
-        .hamburger span {
-            width: 100%;
-            height: 3px;
-            background: white;
-            border-radius: 2px;
-            transition: all 0.3s ease;
-        }
-
-        #nav-toggle.active .hamburger span:nth-child(1) {
-            transform: rotate(45deg) translate(7px, 7px);
-        }
-
-        #nav-toggle.active .hamburger span:nth-child(2) {
-            opacity: 0;
-        }
-
-        #nav-toggle.active .hamburger span:nth-child(3) {
-            transform: rotate(-45deg) translate(7px, -7px);
-        }
-
-        /* Top Bar Dropdown */
-        #nav-bar {
+        /* Radial Navigation Menu */
+        #nav-menu {
             position: fixed;
+            top: 30px;
+            left: 30px;
+            width: 60px;
+            height: 60px;
+            z-index: 999;
+            pointer-events: none;
+        }
+
+        #nav-menu.active {
+            pointer-events: all;
+        }
+
+        .nav-item {
+            position: absolute;
             top: 0;
             left: 0;
-            width: 100%;
-            background: linear-gradient(135deg, var(--om84-navy) 0%, var(--om84-strumplate) 100%);
-            padding: 110px 40px 30px;
-            z-index: 1000;
-            transform: translateY(-100%);
-            transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
-        }
-
-        #nav-bar.active {
-            transform: translateY(0);
-        }
-
-        .nav-items {
-            max-width: 1200px;
-            margin: 0 auto;
+            width: 50px;
+            height: 50px;
+            background: var(--om84-navy);
+            border-radius: 50%;
             display: flex;
-            justify-content: space-around;
             align-items: center;
-            flex-wrap: wrap;
-            gap: 20px;
-        }
-
-        .nav-link {
-            color: white;
-            text-decoration: none;
-            font-size: 1.1rem;
-            font-weight: 600;
-            padding: 12px 20px;
-            border-radius: 8px;
-            transition: all 0.3s ease;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
             opacity: 0;
-            transform: translateY(-20px);
-            position: relative;
+            transform: scale(0);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
         }
 
-        #nav-bar.active .nav-link {
-            animation: bounceIn 0.6s ease forwards;
+        .nav-item span {
+            color: white;
+            font-size: 12px;
+            font-weight: 600;
+            text-align: center;
+            padding: 5px;
+            line-height: 1.2;
         }
 
-        #nav-bar.active .nav-link:nth-child(1) { animation-delay: 0.05s; }
-        #nav-bar.active .nav-link:nth-child(2) { animation-delay: 0.1s; }
-        #nav-bar.active .nav-link:nth-child(3) { animation-delay: 0.15s; }
-        #nav-bar.active .nav-link:nth-child(4) { animation-delay: 0.2s; }
-        #nav-bar.active .nav-link:nth-child(5) { animation-delay: 0.25s; }
-        #nav-bar.active .nav-link:nth-child(6) { animation-delay: 0.3s; }
-        #nav-bar.active .nav-link:nth-child(7) { animation-delay: 0.35s; }
-
-        @keyframes bounceIn {
-            0% {
-                opacity: 0;
-                transform: translateY(-20px);
-            }
-            60% {
-                opacity: 1;
-                transform: translateY(5px);
-            }
-            100% {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .nav-link::after {
-            content: '';
-            position: absolute;
-            bottom: 5px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 0;
-            height: 3px;
+        .nav-item:hover {
             background: var(--om84-accent);
-            border-radius: 2px;
-            transition: width 0.3s ease;
+            transform: scale(1.15) translate(var(--tx), var(--ty)) !important;
         }
 
-        .nav-link:hover {
-            background: rgba(255, 255, 255, 0.1);
-        }
-
-        .nav-link:hover::after {
-            width: 80%;
+        #nav-menu.active .nav-item {
+            opacity: 1;
+            transform: scale(1) translate(var(--tx), var(--ty));
         }
 
         /* Header */
@@ -251,22 +186,12 @@
             font-size: 1.1rem;
         }
 
-        ul {
+        ul, ol {
             margin-left: 30px;
             margin-bottom: 20px;
         }
 
         li {
-            margin-bottom: 10px;
-            font-size: 1.05rem;
-        }
-
-        ol {
-            margin-left: 30px;
-            margin-bottom: 20px;
-        }
-
-        ol li {
             margin-bottom: 10px;
             font-size: 1.05rem;
         }
@@ -329,20 +254,28 @@
             font-size: 1.2rem;
         }
 
-        /* Screenshot Placeholder */
-        .screenshot {
-            width: 100%;
-            height: 400px;
+        /* Screenshot */
+        figure.screenshot {
+            margin: 30px 0;
             background: linear-gradient(135deg, var(--om84-button) 0%, var(--om84-body) 100%);
             border-radius: 15px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 30px 0;
-            border: 3px dashed var(--om84-accent);
-            color: var(--om84-dark);
-            font-style: italic;
-            box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.1);
+            border: 3px solid rgba(209, 107, 46, 0.25);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+            overflow: hidden;
+        }
+
+        figure.screenshot img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        figure.screenshot figcaption {
+            padding: 12px 16px;
+            font-size: 0.95rem;
+            color: rgba(64, 58, 53, 0.85);
+            background: rgba(242, 237, 224, 0.65);
+            border-top: 1px solid rgba(64, 58, 53, 0.08);
         }
 
         /* Tips Box */
@@ -390,16 +323,6 @@
             .feature-grid {
                 grid-template-columns: 1fr;
             }
-
-            .nav-items {
-                flex-direction: column;
-                gap: 10px;
-            }
-
-            .nav-link {
-                width: 100%;
-                text-align: center;
-            }
         }
 
         /* Accent Highlights */
@@ -436,11 +359,6 @@
             font-weight: 600;
         }
 
-        thead {
-            position: sticky;
-            top: 0;
-        }
-
         tr:last-child td {
             border-bottom: none;
         }
@@ -451,26 +369,34 @@
     </style>
 </head>
 <body>
-    <!-- Navigation Toggle Button -->
+    <!-- Circular Navigation Toggle -->
     <div id="nav-toggle" onclick="toggleNav()">
-        <div class="hamburger">
-            <span></span>
-            <span></span>
-            <span></span>
-        </div>
+        <span>☰</span>
     </div>
 
-    <!-- Top Bar Navigation -->
-    <div id="nav-bar">
-        <nav class="nav-items">
-            <a href="#overview" class="nav-link" onclick="toggleNav()">Intro</a>
-            <a href="#interface" class="nav-link" onclick="toggleNav()">Layout</a>
-            <a href="#control-panel" class="nav-link" onclick="toggleNav()">Controls</a>
-            <a href="#chord-grid" class="nav-link" onclick="toggleNav()">Chords</a>
-            <a href="#strumplate" class="nav-link" onclick="toggleNav()">Strum</a>
-            <a href="#learn-mode" class="nav-link" onclick="toggleNav()">Learn</a>
-            <a href="#tips" class="nav-link" onclick="toggleNav()">Tips</a>
-        </nav>
+    <!-- Radial Navigation Menu -->
+    <div id="nav-menu">
+        <div class="nav-item" data-section="overview" style="--tx: 80px; --ty: 0px;">
+            <span>Intro</span>
+        </div>
+        <div class="nav-item" data-section="interface" style="--tx: 70px; --ty: 50px;">
+            <span>Layout</span>
+        </div>
+        <div class="nav-item" data-section="control-panel" style="--tx: 50px; --ty: 90px;">
+            <span>Controls</span>
+        </div>
+        <div class="nav-item" data-section="chord-grid" style="--tx: 0px; --ty: 110px;">
+            <span>Chords</span>
+        </div>
+        <div class="nav-item" data-section="strumplate" style="--tx: -50px; --ty: 90px;">
+            <span>Strum</span>
+        </div>
+        <div class="nav-item" data-section="learn-mode" style="--tx: -70px; --ty: 50px;">
+            <span>Learn</span>
+        </div>
+        <div class="nav-item" data-section="tips" style="--tx: -80px; --ty: 0px;">
+            <span>Tips</span>
+        </div>
     </div>
 
     <header>
@@ -510,7 +436,11 @@
             <h2>Interface Layout</h2>
             <p>Chordea's interface is divided into three main areas:</p>
 
-            <div class="screenshot">Interface Overview Screenshot</div>
+            <!-- Screenshot: Interface Overview -->
+            <figure class="screenshot">
+                <img src="interface.PNG" alt="Chordea interface overview (control panel, chord grid, strumplate)">
+                <figcaption>Interface overview: control panel (left), chord grid (center), strumplate (right).</figcaption>
+            </figure>
 
             <div class="feature-grid">
                 <div class="feature-card">
@@ -533,7 +463,11 @@
             <h2>Control Panel</h2>
             <p>The control panel provides comprehensive control over your sound and performance parameters.</p>
 
-            <div class="screenshot">Control Panel Screenshot</div>
+            <!-- Screenshot: Control Panel -->
+            <figure class="screenshot">
+                <img src="controlpanel.PNG" alt="Chordea control panel showing filters, toggles, and voicing controls">
+                <figcaption>Control panel: chord groups, audio/MIDI modes, envelope controls, performance toggles, and voicing.</figcaption>
+            </figure>
 
             <h3>Volume</h3>
             <p>Master volume control for internal audio output.</p>
@@ -628,34 +562,30 @@
             <h3>Bottom Buttons</h3>
             <p>Five circular buttons at the bottom:</p>
             <table>
-                <thead>
-                    <tr>
-                        <th>Button</th>
-                        <th>Function</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>🌙 / ☀️</td>
-                        <td>Toggle between light and dark mode</td>
-                    </tr>
-                    <tr>
-                        <td>− / +</td>
-                        <td>Suggestion filter: Show all chords (−) or only suggested chords (+)</td>
-                    </tr>
-                    <tr>
-                        <td>S</td>
-                        <td>Jump to saved sequences view</td>
-                    </tr>
-                    <tr>
-                        <td>L / ✕</td>
-                        <td>Learn mode toggle (red when learning, orange when viewing learned sequences)</td>
-                    </tr>
-                    <tr>
-                        <td>◀</td>
-                        <td>Collapse control panel to maximize chord grid space</td>
-                    </tr>
-                </tbody>
+                <tr>
+                    <th>Button</th>
+                    <th>Function</th>
+                </tr>
+                <tr>
+                    <td>🌙 / ☀️</td>
+                    <td>Toggle between light and dark mode</td>
+                </tr>
+                <tr>
+                    <td>− / +</td>
+                    <td>Suggestion filter: Show all chords (−) or only suggested chords (+)</td>
+                </tr>
+                <tr>
+                    <td>S</td>
+                    <td>Jump to saved sequences view</td>
+                </tr>
+                <tr>
+                    <td>L / ✕</td>
+                    <td>Learn mode toggle (red when learning, orange when viewing learned sequences)</td>
+                </tr>
+                <tr>
+                    <td>◀</td>
+                    <td>Collapse control panel to maximize chord grid space</td>
+                </tr>
             </table>
         </section>
 
@@ -664,7 +594,11 @@
             <h2>Chord Grid</h2>
             <p>The chord grid is the heart of Chordea. Each button represents one chord voicing.</p>
 
-            <div class="screenshot">Chord Grid Screenshot</div>
+            <!-- Screenshot: Chord Grid -->
+            <figure class="screenshot">
+                <img src="chordgrid.PNG" alt="Chordea chord grid showing chord qualities and root notes">
+                <figcaption>Chord grid: chord qualities (rows) across 12 root notes (columns).</figcaption>
+            </figure>
 
             <h3>Layout</h3>
             <ul>
@@ -707,7 +641,11 @@
             <h2>Strumplate</h2>
             <p>The vertical strumplate on the right side provides expressive, multi-touch note triggering.</p>
 
-            <div class="screenshot">Strumplate Screenshot</div>
+            <!-- Screenshot: Strumplate -->
+            <figure class="screenshot">
+                <img src="strumplate.PNG" alt="Chordea strumplate showing touch area">
+                <figcaption>Strumplate: vertical touch surface for expressive, multi-touch note triggering.</figcaption>
+            </figure>
 
             <h3>How It Works</h3>
             <ul>
@@ -740,7 +678,11 @@
             <h2>Learn Mode & Sequences</h2>
             <p>Learn Mode allows you to record and save up to 24 chord sequences (banks) for instant recall.</p>
 
-            <div class="screenshot">Learn Mode Screenshot</div>
+            <!-- Screenshot: Learn Mode / Sequences -->
+            <figure class="screenshot">
+                <img src="sequences.PNG" alt="Chordea learn mode / sequences interface showing saved sequences grid">
+                <figcaption>Learn mode & sequences: recorded chord banks and quick recall view.</figcaption>
+            </figure>
 
             <h3>Recording a Sequence</h3>
             <ol>
@@ -1054,29 +996,39 @@
 
         function toggleNav() {
             navOpen = !navOpen;
-            const navBar = document.getElementById('nav-bar');
+            const navMenu = document.getElementById('nav-menu');
             const navToggle = document.getElementById('nav-toggle');
 
             if (navOpen) {
-                navBar.classList.add('active');
-                navToggle.classList.add('active');
+                navMenu.classList.add('active');
+                navToggle.querySelector('span').textContent = '✕';
             } else {
-                navBar.classList.remove('active');
-                navToggle.classList.remove('active');
+                navMenu.classList.remove('active');
+                navToggle.querySelector('span').textContent = '☰';
             }
         }
 
         // Smooth scroll to sections
-        document.querySelectorAll('.nav-link').forEach(link => {
-            link.addEventListener('click', function(e) {
-                e.preventDefault();
-                const targetId = this.getAttribute('href').substring(1);
-                const targetSection = document.getElementById(targetId);
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.addEventListener('click', function() {
+                const sectionId = this.getAttribute('data-section');
+                const section = document.getElementById(sectionId);
 
-                if (targetSection) {
-                    targetSection.scrollIntoView({ behavior: 'smooth' });
+                if (section) {
+                    section.scrollIntoView({ behavior: 'smooth' });
+                    toggleNav(); // Close nav after clicking
                 }
             });
+        });
+
+        // Close nav when clicking outside
+        document.addEventListener('click', function(event) {
+            const navMenu = document.getElementById('nav-menu');
+            const navToggle = document.getElementById('nav-toggle');
+
+            if (navOpen && !navMenu.contains(event.target) && !navToggle.contains(event.target)) {
+                toggleNav();
+            }
         });
     </script>
 </body>
