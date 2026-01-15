@@ -1,0 +1,1007 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chordea User Manual</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --om84-body: #e0dbd1;
+            --om84-dark: #403a35;
+            --om84-navy: #263a66;
+            --om84-button: #f2ede0;
+            --om84-accent: #d16b2e;
+            --om84-strumplate: #2e2924;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: var(--om84-body);
+            color: var(--om84-dark);
+            line-height: 1.6;
+        }
+
+        /* Circular Navigation */
+        #nav-toggle {
+            position: fixed;
+            top: 30px;
+            left: 30px;
+            width: 60px;
+            height: 60px;
+            background: var(--om84-navy);
+            border-radius: 50%;
+            cursor: pointer;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        #nav-toggle:hover {
+            transform: scale(1.1);
+            background: var(--om84-accent);
+        }
+
+        #nav-toggle span {
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        /* Radial Navigation Menu */
+        #nav-menu {
+            position: fixed;
+            top: 30px;
+            left: 30px;
+            width: 60px;
+            height: 60px;
+            z-index: 999;
+            pointer-events: none;
+        }
+
+        #nav-menu.active {
+            pointer-events: all;
+        }
+
+        .nav-item {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 50px;
+            height: 50px;
+            background: var(--om84-navy);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            opacity: 0;
+            transform: scale(0);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .nav-item span {
+            color: white;
+            font-size: 12px;
+            font-weight: 600;
+            text-align: center;
+            padding: 5px;
+            line-height: 1.2;
+        }
+
+        .nav-item:hover {
+            background: var(--om84-accent);
+            transform: scale(1.15) translate(var(--tx), var(--ty)) !important;
+        }
+
+        #nav-menu.active .nav-item {
+            opacity: 1;
+            transform: scale(1) translate(var(--tx), var(--ty));
+        }
+
+        /* Header */
+        header {
+            background: linear-gradient(135deg, var(--om84-navy) 0%, var(--om84-strumplate) 100%);
+            color: white;
+            padding: 100px 40px 60px;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        header h1 {
+            font-size: 4rem;
+            font-weight: 900;
+            letter-spacing: 0.1em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        header .version {
+            font-size: 1.2rem;
+            opacity: 0.8;
+            margin-bottom: 20px;
+        }
+
+        header p {
+            font-size: 1.3rem;
+            max-width: 600px;
+            margin: 0 auto;
+            opacity: 0.9;
+        }
+
+        /* Main Content */
+        main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 60px 40px;
+        }
+
+        section {
+            margin-bottom: 80px;
+            scroll-margin-top: 100px;
+        }
+
+        section h2 {
+            font-size: 2.5rem;
+            color: var(--om84-navy);
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 4px solid var(--om84-accent);
+            position: relative;
+        }
+
+        section h2::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 60px;
+            height: 4px;
+            background: var(--om84-navy);
+        }
+
+        section h3 {
+            font-size: 1.8rem;
+            color: var(--om84-navy);
+            margin: 30px 0 15px;
+        }
+
+        section h4 {
+            font-size: 1.3rem;
+            color: var(--om84-accent);
+            margin: 20px 0 10px;
+        }
+
+        p {
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+        }
+
+        ul {
+            margin-left: 30px;
+            margin-bottom: 20px;
+        }
+
+        li {
+            margin-bottom: 10px;
+            font-size: 1.05rem;
+        }
+
+        /* Feature Cards */
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin: 30px 0;
+        }
+
+        .feature-card {
+            background: var(--om84-button);
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+            border-color: var(--om84-accent);
+        }
+
+        .feature-card h4 {
+            margin-top: 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .feature-card .icon {
+            width: 30px;
+            height: 30px;
+            background: var(--om84-accent);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        /* Code/Control Blocks */
+        .control-block {
+            background: var(--om84-strumplate);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-left: 5px solid var(--om84-accent);
+        }
+
+        .control-name {
+            color: var(--om84-accent);
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        /* Screenshot Placeholder */
+        .screenshot {
+            width: 100%;
+            height: 400px;
+            background: linear-gradient(135deg, var(--om84-button) 0%, var(--om84-body) 100%);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 30px 0;
+            border: 3px dashed var(--om84-accent);
+            color: var(--om84-dark);
+            font-style: italic;
+            box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Tips Box */
+        .tip-box {
+            background: linear-gradient(135deg, #fff8e1 0%, #ffe0b2 100%);
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 5px solid var(--om84-accent);
+            margin: 25px 0;
+        }
+
+        .tip-box strong {
+            color: var(--om84-accent);
+            font-size: 1.1rem;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--om84-strumplate);
+            color: white;
+            text-align: center;
+            padding: 40px;
+            margin-top: 60px;
+        }
+
+        /* Smooth Scroll */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2.5rem;
+            }
+
+            section h2 {
+                font-size: 2rem;
+            }
+
+            main {
+                padding: 40px 20px;
+            }
+
+            .feature-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Accent Highlights */
+        strong {
+            color: var(--om84-navy);
+        }
+
+        em {
+            color: var(--om84-accent);
+            font-style: normal;
+            font-weight: 600;
+        }
+
+        /* Table Styling */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            background: var(--om84-button);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        th, td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid var(--om84-body);
+        }
+
+        th {
+            background: var(--om84-navy);
+            color: white;
+            font-weight: 600;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover {
+            background: var(--om84-body);
+        }
+    </style>
+</head>
+<body>
+    <!-- Circular Navigation Toggle -->
+    <div id="nav-toggle" onclick="toggleNav()">
+        <span>☰</span>
+    </div>
+
+    <!-- Radial Navigation Menu -->
+    <div id="nav-menu">
+        <div class="nav-item" data-section="overview" style="--tx: 80px; --ty: 0px;">
+            <span>Intro</span>
+        </div>
+        <div class="nav-item" data-section="interface" style="--tx: 70px; --ty: 50px;">
+            <span>Layout</span>
+        </div>
+        <div class="nav-item" data-section="control-panel" style="--tx: 50px; --ty: 90px;">
+            <span>Controls</span>
+        </div>
+        <div class="nav-item" data-section="chord-grid" style="--tx: 0px; --ty: 110px;">
+            <span>Chords</span>
+        </div>
+        <div class="nav-item" data-section="strumplate" style="--tx: -50px; --ty: 90px;">
+            <span>Strum</span>
+        </div>
+        <div class="nav-item" data-section="learn-mode" style="--tx: -70px; --ty: 50px;">
+            <span>Learn</span>
+        </div>
+        <div class="nav-item" data-section="tips" style="--tx: -80px; --ty: 0px;">
+            <span>Tips</span>
+        </div>
+    </div>
+
+    <header>
+        <h1>CHORDEA</h1>
+        <div class="version">Version 1.2.4</div>
+        <p>Your iPad Chord Performance Instrument</p>
+    </header>
+
+    <main>
+        <!-- OVERVIEW -->
+        <section id="overview">
+            <h2>Welcome to Chordea</h2>
+            <p>Chordea is an innovative chord performance instrument designed exclusively for iPad. Inspired by classic hardware instruments, Chordea combines an intuitive chord grid, expressive strumplate, and powerful voicing controls to help you create music quickly and beautifully.</p>
+
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h4><span class="icon">♪</span> 252 Chord Voicings</h4>
+                    <p>Play 21 chord qualities across all 12 notes with 4 inversions each.</p>
+                </div>
+                <div class="feature-card">
+                    <h4><span class="icon">🎹</span> Expressive Strumplate</h4>
+                    <p>Multi-touch vertical strumming with polyphonic note triggering.</p>
+                </div>
+                <div class="feature-card">
+                    <h4><span class="icon">🎼</span> Learn Mode</h4>
+                    <p>Record and recall up to 24 chord sequences for instant playback.</p>
+                </div>
+                <div class="feature-card">
+                    <h4><span class="icon">🎛️</span> Auto Strum</h4>
+                    <p>Automatic chord arpeggiation with forward, backward, and ping-pong modes.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- INTERFACE LAYOUT -->
+        <section id="interface">
+            <h2>Interface Layout</h2>
+            <p>Chordea's interface is divided into three main areas:</p>
+
+            <div class="screenshot">Interface Overview Screenshot</div>
+
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h4>Left: Control Panel (20%)</h4>
+                    <p>All your sound shaping and performance controls in one compact panel. Collapsible to maximize chord grid space.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>Center: Chord Grid (70%)</h4>
+                    <p>21 rows (chord qualities) × 12 columns (notes). Drag across to play different chords. Scroll vertically for more qualities.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>Right: Strumplate (10%)</h4>
+                    <p>Vertical multi-touch surface for expressive note triggering. Touch anywhere to play the chord's notes.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- CONTROL PANEL -->
+        <section id="control-panel">
+            <h2>Control Panel</h2>
+            <p>The control panel provides comprehensive control over your sound and performance parameters.</p>
+
+            <div class="screenshot">Control Panel Screenshot</div>
+
+            <h3>Volume</h3>
+            <p>Master volume control for internal audio output.</p>
+
+            <h3>Chord Group Filter</h3>
+            <p>Filter which chord types appear in the grid:</p>
+            <ul>
+                <li><strong>Core:</strong> Major, Minor, Dominant 7, Sus2, Sus4</li>
+                <li><strong>Color:</strong> Major 7, Minor 7, Major 9, Minor 9, Dominant 9, Major 6, Minor 6</li>
+                <li><strong>Tension:</strong> Diminished, Diminished 7, Half-Diminished, Augmented, Dom7♯9, Dom7♭9, Maj7♯11, Minor 11, Dom13</li>
+            </ul>
+            <p>Select one, two, or all three groups. At least one group must remain active.</p>
+
+            <h3>Waveform Selector</h3>
+            <p>Choose your synthesis waveform:</p>
+            <ul>
+                <li><strong>Sine:</strong> Pure, smooth tone</li>
+                <li><strong>Square:</strong> Hollow, clarinet-like tone</li>
+                <li><strong>Saw:</strong> Bright, buzzy tone</li>
+                <li><strong>Triangle:</strong> Mellow, flute-like tone</li>
+            </ul>
+
+            <h3>Audio Mode</h3>
+            <ul>
+                <li><strong>Audio:</strong> Internal audio synthesis only</li>
+                <li><strong>MIDI Out:</strong> MIDI output only (select destination below)</li>
+                <li><strong>Both:</strong> Internal audio + MIDI output simultaneously</li>
+            </ul>
+
+            <h3>Envelope Controls</h3>
+            <div class="control-block">
+                <div class="control-name">Attack</div>
+                Controls how quickly notes fade in (0.001s - 1.0s). Lower values = sharper attack.
+            </div>
+
+            <div class="control-block">
+                <div class="control-name">Release</div>
+                (Only visible when Auto Strum is enabled)<br>
+                Controls how quickly notes fade out (0.0s - 1.0s). Higher values = longer sustain.
+            </div>
+
+            <div class="control-block">
+                <div class="control-name">Strum Speed</div>
+                (Only visible when Auto Strum is enabled)<br>
+                Controls the speed of automatic arpeggiation (0% = instant chord, 100% = slowest).
+            </div>
+
+            <h3>Toggle Buttons</h3>
+            <p>Four buttons that glow orange when active:</p>
+
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h4>HOLD</h4>
+                    <p><em>Enabled by default.</em> When on, chords stay active until you tap another chord. When off, chords release when you lift your finger.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>STRUM</h4>
+                    <p>Enable automatic chord arpeggiation. Direction picker appears above when enabled. Disables manual strumplate.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>FILTER</h4>
+                    <p><em>Enabled by default.</em> Applies a low-pass filter to smooth the audio output.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>FX</h4>
+                    <p><em>Disabled by default.</em> Enables reverb/delay effects processing.</p>
+                </div>
+            </div>
+
+            <h3>Direction Picker</h3>
+            <p>(Only visible when Auto Strum is enabled)</p>
+            <ul>
+                <li><strong>Forward:</strong> Lowest to highest note, plays once</li>
+                <li><strong>Backward:</strong> Highest to lowest note, plays once</li>
+                <li><strong>Ping-Pong:</strong> Continuous back-and-forth looping</li>
+            </ul>
+
+            <h3>Voicing (Inversions)</h3>
+            <p>Four buttons (I, II, III, IV) that glow orange when selected. Changes which note of the chord is the lowest:</p>
+            <ul>
+                <li><strong>I:</strong> Root position (default)</li>
+                <li><strong>II:</strong> First inversion</li>
+                <li><strong>III:</strong> Second inversion</li>
+                <li><strong>IV:</strong> Third inversion (when available)</li>
+            </ul>
+            <p>Not all chords have all inversions available. Unavailable inversions are hidden.</p>
+
+            <h3>MIDI Out</h3>
+            <p>(Only visible when Audio Mode is set to "MIDI Out" or "Both")</p>
+            <p>Select your MIDI destination device from the dropdown. Shows "No devices available" when no MIDI destinations are found.</p>
+
+            <h3>Bottom Buttons</h3>
+            <p>Five circular buttons at the bottom:</p>
+            <table>
+                <tr>
+                    <th>Button</th>
+                    <th>Function</th>
+                </tr>
+                <tr>
+                    <td>🌙 / ☀️</td>
+                    <td>Toggle between light and dark mode</td>
+                </tr>
+                <tr>
+                    <td>− / +</td>
+                    <td>Suggestion filter: Show all chords (−) or only suggested chords (+)</td>
+                </tr>
+                <tr>
+                    <td>S</td>
+                    <td>Jump to saved sequences view</td>
+                </tr>
+                <tr>
+                    <td>L / ✕</td>
+                    <td>Learn mode toggle (red when learning, orange when viewing learned sequences)</td>
+                </tr>
+                <tr>
+                    <td>◀</td>
+                    <td>Collapse control panel to maximize chord grid space</td>
+                </tr>
+            </table>
+        </section>
+
+        <!-- CHORD GRID -->
+        <section id="chord-grid">
+            <h2>Chord Grid</h2>
+            <p>The chord grid is the heart of Chordea. Each button represents one chord voicing.</p>
+
+            <div class="screenshot">Chord Grid Screenshot</div>
+
+            <h3>Layout</h3>
+            <ul>
+                <li><strong>Rows:</strong> Chord qualities (Major, Minor, Dominant7, etc.)</li>
+                <li><strong>Columns:</strong> Root notes (C, C♯, D, D♯, E, F, F♯, G, G♯, A, A♯, B)</li>
+            </ul>
+
+            <h3>Playing Chords</h3>
+            <ul>
+                <li><strong>Tap:</strong> Select and play a chord</li>
+                <li><strong>Drag:</strong> Smoothly transition between chords (no repeated triggers on same chord)</li>
+                <li><strong>Hold Mode ON:</strong> Chord stays selected until you tap another</li>
+                <li><strong>Hold Mode OFF:</strong> Chord releases when you lift your finger</li>
+            </ul>
+
+            <h3>Visual States</h3>
+            <ul>
+                <li><strong>Cream/Grey buttons:</strong> White keys / Black keys (natural vs sharp)</li>
+                <li><strong>Yellow glow:</strong> Currently selected chord</li>
+                <li><strong>Yellow outline:</strong> Suggested next chord (based on music theory)</li>
+                <li><strong>Green:</strong> Chord currently being learned/recorded</li>
+            </ul>
+
+            <h3>Suggestion Mode</h3>
+            <p>When suggestion filter is enabled (+), the grid transforms:</p>
+            <ul>
+                <li>Grid reorganizes into vertical columns by note</li>
+                <li>Only shows the selected chord + suggested next chords</li>
+                <li>Chords appear larger (double height) for easier selection</li>
+                <li>Perfect for focused, theory-guided playing</li>
+            </ul>
+
+            <div class="tip-box">
+                <strong>💡 Pro Tip:</strong> Use suggestion mode with Auto Strum disabled and Hold disabled for rapid-fire chord changes. The last played chord stays visible (without glow) so you can quickly re-trigger it.
+            </div>
+        </section>
+
+        <!-- STRUMPLATE -->
+        <section id="strumplate">
+            <h2>Strumplate</h2>
+            <p>The vertical strumplate on the right side provides expressive, multi-touch note triggering.</p>
+
+            <div class="screenshot">Strumplate Screenshot</div>
+
+            <h3>How It Works</h3>
+            <ul>
+                <li><strong>Touch anywhere:</strong> Triggers notes based on vertical position</li>
+                <li><strong>Bottom = low notes, Top = high notes</strong></li>
+                <li><strong>Multi-touch enabled:</strong> Touch multiple positions simultaneously for polyphonic playing</li>
+                <li><strong>Refractory period:</strong> 50ms per note prevents unwanted re-triggers</li>
+            </ul>
+
+            <h3>Note Mapping</h3>
+            <p>The strumplate intelligently maps your touch position to unique chord notes across 4 octaves. For a C Major chord:</p>
+            <ul>
+                <li>Bottom region: C2, E2, G2</li>
+                <li>Middle-low: C3, E3, G3</li>
+                <li>Middle-high: C4, E4, G4</li>
+                <li>Top region: C5, E5, G5</li>
+            </ul>
+            <p>The surface subdivides dynamically based on the number of unique notes available.</p>
+
+            <h3>Auto Strum Mode</h3>
+            <p>When Auto Strum is enabled, the strumplate shows "AUTO STRUM ON" and is disabled. The app automatically triggers notes based on your chosen direction and speed.</p>
+
+            <div class="tip-box">
+                <strong>💡 Pro Tip:</strong> For expressive playing, try sliding your finger vertically while touching the strumplate to create harp-like runs through the chord.
+            </div>
+        </section>
+
+        <!-- LEARN MODE -->
+        <section id="learn-mode">
+            <h2>Learn Mode & Sequences</h2>
+            <p>Learn Mode allows you to record and save up to 24 chord sequences (banks) for instant recall.</p>
+
+            <div class="screenshot">Learn Mode Screenshot</div>
+
+            <h3>Recording a Sequence</h3>
+            <ol>
+                <li>Press the <strong>L button</strong> (turns red)</li>
+                <li>Play up to 16 chords by tapping them in the chord grid</li>
+                <li>Chords turn <strong>green</strong> as they're recorded</li>
+                <li>Duplicate consecutive chords are automatically skipped</li>
+                <li>Press <strong>L</strong> again to stop recording, or it auto-stops at 16 chords</li>
+            </ol>
+
+            <h3>Viewing Sequences</h3>
+            <p>After recording (or press <strong>S</strong> button), the learned chord view appears:</p>
+            <ul>
+                <li>Chords displayed in a dynamic grid layout (1-16 chords)</li>
+                <li>Each chord shows its position number (1-16)</li>
+                <li>Swipe left/right to switch between sequences</li>
+                <li>Tap any chord to play it</li>
+                <li>Drag across chords for smooth transitions</li>
+                <li>Press <strong>✕</strong> button (orange) to exit back to normal view</li>
+            </ul>
+
+            <h3>Sequence Deck</h3>
+            <p>At the bottom of learned view, see all 24 sequence slots:</p>
+            <ul>
+                <li><strong>Numbered 1-24</strong></li>
+                <li><strong>Grey filled:</strong> Sequence contains chords (alternating shades for visibility)</li>
+                <li><strong>Dotted outline:</strong> Empty slot</li>
+                <li><strong>Yellow border:</strong> Currently active sequence</li>
+                <li><strong>Tap:</strong> Switch to that sequence</li>
+                <li><strong>Long press:</strong> Overwrite that sequence (enters learn mode for that slot)</li>
+            </ul>
+
+            <h3>Managing Sequences</h3>
+            <ul>
+                <li>All sequences are saved automatically and persist across app sessions</li>
+                <li>Switching to an empty slot automatically starts learn mode for that slot</li>
+                <li>If all 24 banks are full, a warning appears: "all banks full, clear a bank to learn"</li>
+                <li>To clear a bank: Long press the sequence number and record a new sequence (or exit learn mode immediately to leave it empty)</li>
+            </ul>
+
+            <div class="tip-box">
+                <strong>💡 Pro Tip:</strong> Use sequences to organize chord progressions by song, key, or mood. The 24 banks give you plenty of room for a full setlist!
+            </div>
+        </section>
+
+        <!-- TIPS & WORKFLOWS -->
+        <section id="tips">
+            <h2>Tips & Workflows</h2>
+
+            <h3>Getting Started</h3>
+            <ol>
+                <li>Start with <strong>Core</strong> chord group filter (Major, Minor, Dom7)</li>
+                <li>Enable <strong>HOLD</strong> and <strong>FILTER</strong></li>
+                <li>Select a chord, then touch the strumplate to hear it</li>
+                <li>Experiment with inversions (I, II, III, IV buttons)</li>
+            </ol>
+
+            <h3>Live Performance Setup</h3>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h4>Expressive Playing</h4>
+                    <p>• Hold: ON<br>• Auto Strum: OFF<br>• Filter: ON<br>• Use strumplate for dynamics</p>
+                </div>
+                <div class="feature-card">
+                    <h4>Ambient Textures</h4>
+                    <p>• Auto Strum: ON (Ping-Pong)<br>• Strum Speed: 30-60%<br>• Release: 0.5-1.0s<br>• FX: ON</p>
+                </div>
+                <div class="feature-card">
+                    <h4>Quick Chord Changes</h4>
+                    <p>• Hold: OFF<br>• Suggestion Filter: ON<br>• Drag rapidly through chord grid<br>• Great for rhythmic playing</p>
+                </div>
+            </div>
+
+            <h3>Sound Design Tips</h3>
+            <ul>
+                <li><strong>Warm pads:</strong> Sine wave + long attack (0.3s+) + FX ON</li>
+                <li><strong>Plucky chords:</strong> Square/Saw wave + short attack (0.001s) + Filter ON</li>
+                <li><strong>Organ-like:</strong> Triangle wave + medium attack (0.05s) + Filter OFF</li>
+                <li><strong>Arpeggiated sequences:</strong> Auto Strum ON + Forward + Strum Speed 15-30%</li>
+            </ul>
+
+            <h3>iPad Mini Optimization</h3>
+            <p>Chordea's UI adapts perfectly to iPad mini:</p>
+            <ul>
+                <li>Buttons automatically resize to fit smaller screen</li>
+                <li>All controls remain accessible without scrolling</li>
+                <li>Collapse the control panel (◀ button) for maximum chord grid space</li>
+            </ul>
+
+            <h3>MIDI Integration</h3>
+            <ul>
+                <li>Set Audio Mode to "MIDI Out" or "Both"</li>
+                <li>Select your MIDI destination (hardware synth, DAW, etc.)</li>
+                <li>MIDI notes always stop immediately (no release envelope)</li>
+                <li>Use Auto Strum with MIDI for complex arpeggios into external gear</li>
+            </ul>
+
+            <h3>Dark Mode</h3>
+            <p>Press 🌙/☀️ button to toggle. Dark mode:</p>
+            <ul>
+                <li>Reduces eye strain in low-light environments</li>
+                <li>Inverts color scheme while maintaining contrast</li>
+                <li>Preserves orange accent color for consistency</li>
+                <li>Preference is saved across sessions</li>
+            </ul>
+
+            <div class="tip-box">
+                <strong>💡 Advanced Workflow:</strong> Record your favorite progressions in Learn Mode, then use the suggestion filter in live performance to explore variations while staying in the same key/mood.
+            </div>
+        </section>
+
+        <!-- CHORD REFERENCE -->
+        <section id="chord-reference">
+            <h2>Chord Quality Reference</h2>
+            <p>All 21 chord qualities available in Chordea:</p>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Chord Type</th>
+                        <th>Symbol</th>
+                        <th>Notes (from C)</th>
+                        <th>Group</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Major</td>
+                        <td>C</td>
+                        <td>C - E - G</td>
+                        <td>Core</td>
+                    </tr>
+                    <tr>
+                        <td>Minor</td>
+                        <td>Cm</td>
+                        <td>C - E♭ - G</td>
+                        <td>Core</td>
+                    </tr>
+                    <tr>
+                        <td>Dominant 7</td>
+                        <td>C7</td>
+                        <td>C - E - G - B♭</td>
+                        <td>Core</td>
+                    </tr>
+                    <tr>
+                        <td>Sus2</td>
+                        <td>Csus2</td>
+                        <td>C - D - G</td>
+                        <td>Core</td>
+                    </tr>
+                    <tr>
+                        <td>Sus4</td>
+                        <td>Csus4</td>
+                        <td>C - F - G</td>
+                        <td>Core</td>
+                    </tr>
+                    <tr>
+                        <td>Major 7</td>
+                        <td>Cmaj7</td>
+                        <td>C - E - G - B</td>
+                        <td>Color</td>
+                    </tr>
+                    <tr>
+                        <td>Minor 7</td>
+                        <td>Cm7</td>
+                        <td>C - E♭ - G - B♭</td>
+                        <td>Color</td>
+                    </tr>
+                    <tr>
+                        <td>Major 9</td>
+                        <td>Cmaj9</td>
+                        <td>C - E - G - B - D</td>
+                        <td>Color</td>
+                    </tr>
+                    <tr>
+                        <td>Minor 9</td>
+                        <td>Cm9</td>
+                        <td>C - E♭ - G - B♭ - D</td>
+                        <td>Color</td>
+                    </tr>
+                    <tr>
+                        <td>Dominant 9</td>
+                        <td>C9</td>
+                        <td>C - E - G - B♭ - D</td>
+                        <td>Color</td>
+                    </tr>
+                    <tr>
+                        <td>Major 6</td>
+                        <td>C6</td>
+                        <td>C - E - G - A</td>
+                        <td>Color</td>
+                    </tr>
+                    <tr>
+                        <td>Minor 6</td>
+                        <td>Cm6</td>
+                        <td>C - E♭ - G - A</td>
+                        <td>Color</td>
+                    </tr>
+                    <tr>
+                        <td>Diminished</td>
+                        <td>Cdim</td>
+                        <td>C - E♭ - G♭</td>
+                        <td>Tension</td>
+                    </tr>
+                    <tr>
+                        <td>Diminished 7</td>
+                        <td>Cdim7</td>
+                        <td>C - E♭ - G♭ - A</td>
+                        <td>Tension</td>
+                    </tr>
+                    <tr>
+                        <td>Half-Diminished</td>
+                        <td>Cm7♭5</td>
+                        <td>C - E♭ - G♭ - B♭</td>
+                        <td>Tension</td>
+                    </tr>
+                    <tr>
+                        <td>Augmented</td>
+                        <td>Caug</td>
+                        <td>C - E - G♯</td>
+                        <td>Tension</td>
+                    </tr>
+                    <tr>
+                        <td>Dominant 7♯9</td>
+                        <td>C7♯9</td>
+                        <td>C - E - G - B♭ - D♯</td>
+                        <td>Tension</td>
+                    </tr>
+                    <tr>
+                        <td>Dominant 7♭9</td>
+                        <td>C7♭9</td>
+                        <td>C - E - G - B♭ - D♭</td>
+                        <td>Tension</td>
+                    </tr>
+                    <tr>
+                        <td>Major 7♯11</td>
+                        <td>Cmaj7♯11</td>
+                        <td>C - E - G - B - F♯</td>
+                        <td>Tension</td>
+                    </tr>
+                    <tr>
+                        <td>Minor 11</td>
+                        <td>Cm11</td>
+                        <td>C - E♭ - G - B♭ - F</td>
+                        <td>Tension</td>
+                    </tr>
+                    <tr>
+                        <td>Dominant 13</td>
+                        <td>C13</td>
+                        <td>C - E - G - B♭ - A</td>
+                        <td>Tension</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- TROUBLESHOOTING -->
+        <section id="troubleshooting">
+            <h2>Troubleshooting</h2>
+
+            <h3>No Sound</h3>
+            <ul>
+                <li>Check iPad volume and mute switch</li>
+                <li>Verify Audio Mode is set to "Audio" or "Both" (not "MIDI Out")</li>
+                <li>Check Volume slider in control panel</li>
+                <li>Make sure a chord is selected (yellow glow)</li>
+                <li>Touch the strumplate (if Auto Strum is off)</li>
+            </ul>
+
+            <h3>MIDI Not Working</h3>
+            <ul>
+                <li>Verify MIDI device is connected and powered on</li>
+                <li>Set Audio Mode to "MIDI Out" or "Both"</li>
+                <li>Select correct MIDI destination from dropdown</li>
+                <li>Try disconnecting and reconnecting MIDI device</li>
+                <li>Restart Chordea if destination doesn't appear</li>
+            </ul>
+
+            <h3>Strumplate Not Responding</h3>
+            <ul>
+                <li>Check if Auto Strum is enabled (disables manual strumplate)</li>
+                <li>Verify a chord is selected</li>
+                <li>Make sure you're touching within the strumplate area (right 10% of screen)</li>
+            </ul>
+
+            <h3>Chord Grid Disappeared</h3>
+            <ul>
+                <li>Check Chord Group Filter - at least one group (Core/Color/Tension) must be selected</li>
+                <li>If using Suggestion Filter (+), make sure a chord is selected or has been played</li>
+            </ul>
+
+            <h3>Performance Issues</h3>
+            <ul>
+                <li>Close other apps to free up iPad resources</li>
+                <li>Disable FX if experiencing audio glitches</li>
+                <li>Reduce voice count by using simpler chord qualities</li>
+                <li>Restart the app if performance degrades over time</li>
+            </ul>
+        </section>
+    </main>
+
+    <footer>
+        <p><strong>CHORDEA</strong> Version 1.2.4</p>
+        <p>© 2024 - iPad Chord Performance Instrument</p>
+        <p style="opacity: 0.7; margin-top: 10px;">Designed for musicians, by musicians</p>
+    </footer>
+
+    <script>
+        // Navigation toggle
+        let navOpen = false;
+
+        function toggleNav() {
+            navOpen = !navOpen;
+            const navMenu = document.getElementById('nav-menu');
+            const navToggle = document.getElementById('nav-toggle');
+
+            if (navOpen) {
+                navMenu.classList.add('active');
+                navToggle.querySelector('span').textContent = '✕';
+            } else {
+                navMenu.classList.remove('active');
+                navToggle.querySelector('span').textContent = '☰';
+            }
+        }
+
+        // Smooth scroll to sections
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.addEventListener('click', function() {
+                const sectionId = this.getAttribute('data-section');
+                const section = document.getElementById(sectionId);
+
+                if (section) {
+                    section.scrollIntoView({ behavior: 'smooth' });
+                    toggleNav(); // Close nav after clicking
+                }
+            });
+        });
+
+        // Close nav when clicking outside
+        document.addEventListener('click', function(event) {
+            const navMenu = document.getElementById('nav-menu');
+            const navToggle = document.getElementById('nav-toggle');
+
+            if (navOpen && !navMenu.contains(event.target) && !navToggle.contains(event.target)) {
+                toggleNav();
+            }
+        });
+    </script>
+</body>
+</html>
