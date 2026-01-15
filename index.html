@@ -254,20 +254,62 @@
             font-size: 1.2rem;
         }
 
-        /* Screenshot Placeholder */
-        .screenshot {
-            width: 100%;
-            height: 400px;
+        /* Two-column layout for long/narrow screenshots + copy */
+        .two-col {
+            display: flex;
+            gap: 28px;
+            align-items: flex-start;
+        }
+
+        .two-col .col-left {
+            flex: 0 0 260px; /* ~1/4-ish visual weight */
+            max-width: 260px;
+        }
+
+        .two-col .col-right {
+            flex: 1 1 auto;
+            min-width: 0;
+        }
+
+        @media (max-width: 900px) {
+            .two-col {
+                flex-direction: column;
+                gap: 18px;
+            }
+
+            .two-col .col-left {
+                flex: 0 0 auto;
+                max-width: 100%;
+            }
+        }
+
+        /* Screenshot */
+        figure.screenshot {
+            margin: 30px 0;
             background: linear-gradient(135deg, var(--om84-button) 0%, var(--om84-body) 100%);
             border-radius: 15px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 30px 0;
-            border: 3px dashed var(--om84-accent);
-            color: var(--om84-dark);
-            font-style: italic;
-            box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.1);
+            border: 3px solid rgba(209, 107, 46, 0.25);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+            overflow: hidden;
+        }
+
+        figure.screenshot img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        figure.screenshot figcaption {
+            padding: 12px 16px;
+            font-size: 0.95rem;
+            color: rgba(64, 58, 53, 0.85);
+            background: rgba(242, 237, 224, 0.65);
+            border-top: 1px solid rgba(64, 58, 53, 0.08);
+        }
+
+        /* Control panel screenshot: smaller + tidy */
+        figure.screenshot.screenshot--controlpanel {
+            margin: 0;
         }
 
         /* Tips Box */
@@ -358,48 +400,6 @@
         tr:hover {
             background: var(--om84-body);
         }
-
-        /* Two-column layout for long/narrow screenshots + copy */
-        .two-col {
-            display: flex;
-            gap: 28px;
-            align-items: flex-start;
-        }
-
-        .two-col .col-left {
-            flex: 0 0 260px;          /* ~1/4-ish visual weight */
-            max-width: 260px;
-        }
-
-        .two-col .col-right {
-            flex: 1 1 auto;
-            min-width: 0;
-        }
-
-        /* Make the control panel screenshot smaller + tidy */
-        figure.screenshot.screenshot--controlpanel {
-            margin: 0;
-        }
-
-        figure.screenshot.screenshot--controlpanel img {
-            width: 100%;
-            height: auto;
-            display: block;
-        }
-
-        /* Mobile: stack */
-        @media (max-width: 900px) {
-            .two-col {
-                flex-direction: column;
-                gap: 18px;
-            }
-
-            .two-col .col-left {
-                flex: 0 0 auto;
-                max-width: 100%;
-            }
-        }
-
     </style>
 </head>
 <body>
@@ -471,9 +471,9 @@
             <p>Chordea's interface is divided into three main areas:</p>
 
             <figure class="screenshot">
-                <img src="interface.PNG" alt="Chordea interface overview (control panel, chord grid, strumplate)">
-                <figcaption>Interface overview: control panel (left), chord grid (center), strumplate (right).</figcaption>
-            </figure>
+    <img src="interface.PNG" alt="Chordea interface overview (control panel, chord grid, strumplate)">
+    <figcaption>Interface overview: control panel (left), chord grid (center), strumplate (right).</figcaption>
+</figure>
 
             <div class="feature-grid">
                 <div class="feature-card">
@@ -497,146 +497,147 @@
             <p>The control panel provides comprehensive control over your sound and performance parameters.</p>
 
             <div class="two-col">
-                <div class="col-left">
-                    <!-- Screenshot: Control Panel -->
-                    <figure class="screenshot screenshot--controlpanel">
-                        <img src="controlpanel.PNG" alt="Chordea control panel showing filters, toggles, and voicing controls">
-                        <figcaption>Control panel: chord groups, audio/MIDI modes, envelope controls, performance toggles, and voicing.</figcaption>
-                    </figure>
+    <div class="col-left">
+        <figure class="screenshot screenshot--controlpanel">
+            <img src="controlpanel.PNG" alt="Chordea control panel showing filters, toggles, and voicing controls">
+            <figcaption>Control panel: chord groups, audio/MIDI modes, envelope controls, performance toggles, and voicing.</figcaption>
+        </figure>
+    </div>
+    <div class="col-right">
+
+            <h3>Volume</h3>
+            <p>Master volume control for internal audio output.</p>
+
+            <h3>Chord Group Filter</h3>
+            <p>Filter which chord types appear in the grid:</p>
+            <ul>
+                <li><strong>Core:</strong> Major, Minor, Dominant 7, Sus2, Sus4</li>
+                <li><strong>Color:</strong> Major 7, Minor 7, Major 9, Minor 9, Dominant 9, Major 6, Minor 6</li>
+                <li><strong>Tension:</strong> Diminished, Diminished 7, Half-Diminished, Augmented, Dom7♯9, Dom7♭9, Maj7♯11, Minor 11, Dom13</li>
+            </ul>
+            <p>Select one, two, or all three groups. At least one group must remain active.</p>
+
+            <h3>Waveform Selector</h3>
+            <p>Choose your synthesis waveform:</p>
+            <ul>
+                <li><strong>Sine:</strong> Pure, smooth tone</li>
+                <li><strong>Square:</strong> Hollow, clarinet-like tone</li>
+                <li><strong>Saw:</strong> Bright, buzzy tone</li>
+                <li><strong>Triangle:</strong> Mellow, flute-like tone</li>
+            </ul>
+
+            <h3>Audio Mode</h3>
+            <ul>
+                <li><strong>Audio:</strong> Internal audio synthesis only</li>
+                <li><strong>MIDI Out:</strong> MIDI output only (select destination below)</li>
+                <li><strong>Both:</strong> Internal audio + MIDI output simultaneously</li>
+            </ul>
+
+            <h3>Envelope Controls</h3>
+            <div class="control-block">
+                <div class="control-name">Attack</div>
+                Controls how quickly notes fade in (0.001s - 1.0s). Lower values = sharper attack.
+            </div>
+
+            <div class="control-block">
+                <div class="control-name">Release</div>
+                (Only visible when Auto Strum is enabled)<br>
+                Controls how quickly notes fade out (0.0s - 1.0s). Higher values = longer sustain.
+            </div>
+
+            <div class="control-block">
+                <div class="control-name">Strum Speed</div>
+                (Only visible when Auto Strum is enabled)<br>
+                Controls the speed of automatic arpeggiation (0% = instant chord, 100% = slowest).
+            </div>
+
+            <h3>Toggle Buttons</h3>
+            <p>Four buttons that glow orange when active:</p>
+
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h4>HOLD</h4>
+                    <p><em>Enabled by default.</em> When on, chords stay active until you tap another chord. When off, chords release when you lift your finger.</p>
                 </div>
-
-                <div class="col-right">
-                    <h3>Volume</h3>
-                    <p>Master volume control for internal audio output.</p>
-
-                    <h3>Chord Group Filter</h3>
-                    <p>Filter which chord types appear in the grid:</p>
-                    <ul>
-                        <li><strong>Core:</strong> Major, Minor, Dominant 7, Sus2, Sus4</li>
-                        <li><strong>Color:</strong> Major 7, Minor 7, Major 9, Minor 9, Dominant 9, Major 6, Minor 6</li>
-                        <li><strong>Tension:</strong> Diminished, Diminished 7, Half-Diminished, Augmented, Dom7♯9, Dom7♭9, Maj7♯11, Minor 11, Dom13</li>
-                    </ul>
-                    <p>Select one, two, or all three groups. At least one group must remain active.</p>
-
-                    <h3>Waveform Selector</h3>
-                    <p>Choose your synthesis waveform:</p>
-                    <ul>
-                        <li><strong>Sine:</strong> Pure, smooth tone</li>
-                        <li><strong>Square:</strong> Hollow, clarinet-like tone</li>
-                        <li><strong>Saw:</strong> Bright, buzzy tone</li>
-                        <li><strong>Triangle:</strong> Mellow, flute-like tone</li>
-                    </ul>
-
-                    <h3>Audio Mode</h3>
-                    <ul>
-                        <li><strong>Audio:</strong> Internal audio synthesis only</li>
-                        <li><strong>MIDI Out:</strong> MIDI output only (select destination below)</li>
-                        <li><strong>Both:</strong> Internal audio + MIDI output simultaneously</li>
-                    </ul>
-
-                    <h3>Envelope Controls</h3>
-                    <div class="control-block">
-                        <div class="control-name">Attack</div>
-                        Controls how quickly notes fade in (0.001s - 1.0s). Lower values = sharper attack.
-                    </div>
-
-                    <div class="control-block">
-                        <div class="control-name">Release</div>
-                        (Only visible when Auto Strum is enabled)<br>
-                        Controls how quickly notes fade out (0.0s - 1.0s). Higher values = longer sustain.
-                    </div>
-
-                    <div class="control-block">
-                        <div class="control-name">Strum Speed</div>
-                        (Only visible when Auto Strum is enabled)<br>
-                        Controls the speed of automatic arpeggiation (0% = instant chord, 100% = slowest).
-                    </div>
-
-                    <h3>Toggle Buttons</h3>
-                    <p>Four buttons that glow orange when active:</p>
-
-                    <div class="feature-grid">
-                        <div class="feature-card">
-                            <h4>HOLD</h4>
-                            <p><em>Enabled by default.</em> When on, chords stay active until you tap another chord. When off, chords release when you lift your finger.</p>
-                        </div>
-                        <div class="feature-card">
-                            <h4>STRUM</h4>
-                            <p>Enable automatic chord arpeggiation. Direction picker appears above when enabled. Disables manual strumplate.</p>
-                        </div>
-                        <div class="feature-card">
-                            <h4>FILTER</h4>
-                            <p><em>Enabled by default.</em> Applies a low-pass filter to smooth the audio output.</p>
-                        </div>
-                        <div class="feature-card">
-                            <h4>FX</h4>
-                            <p><em>Disabled by default.</em> Enables reverb/delay effects processing.</p>
-                        </div>
-                    </div>
-
-                    <h3>Direction Picker</h3>
-                    <p>(Only visible when Auto Strum is enabled)</p>
-                    <ul>
-                        <li><strong>Forward:</strong> Lowest to highest note, plays once</li>
-                        <li><strong>Backward:</strong> Highest to lowest note, plays once</li>
-                        <li><strong>Ping-Pong:</strong> Continuous back-and-forth looping</li>
-                    </ul>
-
-                    <h3>Voicing (Inversions)</h3>
-                    <p>Four buttons (I, II, III, IV) that glow orange when selected. Changes which note of the chord is the lowest:</p>
-                    <ul>
-                        <li><strong>I:</strong> Root position (default)</li>
-                        <li><strong>II:</strong> First inversion</li>
-                        <li><strong>III:</strong> Second inversion</li>
-                        <li><strong>IV:</strong> Third inversion (when available)</li>
-                    </ul>
-                    <p>Not all chords have all inversions available. Unavailable inversions are hidden.</p>
-
-                    <h3>MIDI Out</h3>
-                    <p>(Only visible when Audio Mode is set to "MIDI Out" or "Both")</p>
-                    <p>Select your MIDI destination device from the dropdown. Shows "No devices available" when no MIDI destinations are found.</p>
-
-                    <h3>Bottom Buttons</h3>
-                    <p>Five circular buttons at the bottom:</p>
-                    <table>
-                        <tr>
-                            <th>Button</th>
-                            <th>Function</th>
-                        </tr>
-                        <tr>
-                            <td>🌙 / ☀️</td>
-                            <td>Toggle between light and dark mode</td>
-                        </tr>
-                        <tr>
-                            <td>− / +</td>
-                            <td>Suggestion filter: Show all chords (−) or only suggested chords (+)</td>
-                        </tr>
-                        <tr>
-                            <td>S</td>
-                            <td>Jump to saved sequences view</td>
-                        </tr>
-                        <tr>
-                            <td>L / ✕</td>
-                            <td>Learn mode toggle (red when learning, orange when viewing learned sequences)</td>
-                        </tr>
-                        <tr>
-                            <td>◀</td>
-                            <td>Collapse control panel to maximize chord grid space</td>
-                        </tr>
-                    </table>
+                <div class="feature-card">
+                    <h4>STRUM</h4>
+                    <p>Enable automatic chord arpeggiation. Direction picker appears above when enabled. Disables manual strumplate.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>FILTER</h4>
+                    <p><em>Enabled by default.</em> Applies a low-pass filter to smooth the audio output.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>FX</h4>
+                    <p><em>Disabled by default.</em> Enables reverb/delay effects processing.</p>
                 </div>
             </div>
-        </section>
 
-<!-- CHORD GRID -->
+            <h3>Direction Picker</h3>
+            <p>(Only visible when Auto Strum is enabled)</p>
+            <ul>
+                <li><strong>Forward:</strong> Lowest to highest note, plays once</li>
+                <li><strong>Backward:</strong> Highest to lowest note, plays once</li>
+                <li><strong>Ping-Pong:</strong> Continuous back-and-forth looping</li>
+            </ul>
+
+            <h3>Voicing (Inversions)</h3>
+            <p>Four buttons (I, II, III, IV) that glow orange when selected. Changes which note of the chord is the lowest:</p>
+            <ul>
+                <li><strong>I:</strong> Root position (default)</li>
+                <li><strong>II:</strong> First inversion</li>
+                <li><strong>III:</strong> Second inversion</li>
+                <li><strong>IV:</strong> Third inversion (when available)</li>
+            </ul>
+            <p>Not all chords have all inversions available. Unavailable inversions are hidden.</p>
+
+            <h3>MIDI Out</h3>
+            <p>(Only visible when Audio Mode is set to "MIDI Out" or "Both")</p>
+            <p>Select your MIDI destination device from the dropdown. Shows "No devices available" when no MIDI destinations are found.</p>
+
+            <h3>Bottom Buttons</h3>
+            <p>Five circular buttons at the bottom:</p>
+            <table>
+                <tr>
+                    <th>Button</th>
+                    <th>Function</th>
+                </tr>
+                <tr>
+                    <td>🌙 / ☀️</td>
+                    <td>Toggle between light and dark mode</td>
+                </tr>
+                <tr>
+                    <td>− / +</td>
+                    <td>Suggestion filter: Show all chords (−) or only suggested chords (+)</td>
+                </tr>
+                <tr>
+                    <td>S</td>
+                    <td>Jump to saved sequences view</td>
+                </tr>
+                <tr>
+                    <td>L / ✕</td>
+                    <td>Learn mode toggle (red when learning, orange when viewing learned sequences)</td>
+                </tr>
+                <tr>
+                    <td>◀</td>
+                    <td>Collapse control panel to maximize chord grid space</td>
+                </tr>
+            </table>
+        
+    </div>
+</div>
+
+</section>
+
+        <!-- CHORD GRID -->
         <section id="chord-grid">
             <h2>Chord Grid</h2>
             <p>The chord grid is the heart of Chordea. Each button represents one chord voicing.</p>
 
             <figure class="screenshot">
-                <img src="chordgrid.PNG" alt="Chordea chord grid showing chord qualities and root notes">
-                <figcaption>Chord grid: chord qualities (rows) across 12 root notes (columns).</figcaption>
-            </figure>
+    <img src="chordgrid.PNG" alt="Chordea chord grid showing chord qualities and root notes">
+    <figcaption>Chord grid: chord qualities (rows) across 12 root notes (columns).</figcaption>
+</figure>
 
             <h3>Layout</h3>
             <ul>
@@ -680,9 +681,9 @@
             <p>The vertical strumplate on the right side provides expressive, multi-touch note triggering.</p>
 
             <figure class="screenshot">
-                <img src="strumplate.PNG" alt="Chordea strumplate showing touch area">
-                <figcaption>Strumplate: vertical touch surface for expressive, multi-touch note triggering.</figcaption>
-            </figure>
+    <img src="strumplate.PNG" alt="Chordea strumplate showing touch area">
+    <figcaption>Strumplate: vertical touch surface for expressive, multi-touch note triggering.</figcaption>
+</figure>
 
             <h3>How It Works</h3>
             <ul>
@@ -716,9 +717,9 @@
             <p>Learn Mode allows you to record and save up to 24 chord sequences (banks) for instant recall.</p>
 
             <figure class="screenshot">
-                <img src="sequences.PNG" alt="Chordea learn mode / sequences interface showing saved sequences grid">
-                <figcaption>Learn mode & sequences: recorded chord banks and quick recall view.</figcaption>
-            </figure>
+    <img src="sequences.PNG" alt="Chordea learn mode / sequences interface showing saved sequences grid">
+    <figcaption>Learn mode &amp; sequences: recorded chord banks and quick recall view.</figcaption>
+</figure>
 
             <h3>Recording a Sequence</h3>
             <ol>
