@@ -60,9 +60,10 @@
         #nav-menu {
             position: fixed;
             top: 30px;
-            left: 30px;
-            width: 60px;
+            left: 100px;
             height: 60px;
+            display: flex;
+            gap: 14px;
             z-index: 999;
             pointer-events: none;
         }
@@ -72,11 +73,10 @@
         }
 
         .nav-item {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 50px;
-            height: 50px;
+            transform: translateX(-20px);
+            position: relative;
+            width: 75px;
+            height: 75px;
             background: var(--om84-navy);
             border-radius: 50%;
             display: flex;
@@ -104,8 +104,9 @@
         }
 
         #nav-menu.active .nav-item {
+            transform: translateX(-20px);
             opacity: 1;
-            transform: scale(1) translate(var(--tx), var(--ty));
+            transform: translateX(0);
         }
 
         /* Header */
@@ -410,25 +411,25 @@
 
     <!-- Radial Navigation Menu -->
     <div id="nav-menu">
-        <div class="nav-item" data-section="overview" style="--tx: 80px; --ty: 0px;">
+        <div class="nav-item" data-section="overview" >
             <span>Intro</span>
         </div>
-        <div class="nav-item" data-section="interface" style="--tx: 70px; --ty: 50px;">
+        <div class="nav-item" data-section="interface" >
             <span>Layout</span>
         </div>
-        <div class="nav-item" data-section="control-panel" style="--tx: 50px; --ty: 90px;">
+        <div class="nav-item" data-section="control-panel" >
             <span>Controls</span>
         </div>
-        <div class="nav-item" data-section="chord-grid" style="--tx: 0px; --ty: 110px;">
+        <div class="nav-item" data-section="chord-grid" >
             <span>Chords</span>
         </div>
-        <div class="nav-item" data-section="strumplate" style="--tx: -50px; --ty: 90px;">
+        <div class="nav-item" data-section="strumplate" >
             <span>Strum</span>
         </div>
-        <div class="nav-item" data-section="learn-mode" style="--tx: -70px; --ty: 50px;">
+        <div class="nav-item" data-section="learn-mode" >
             <span>Learn</span>
         </div>
-        <div class="nav-item" data-section="tips" style="--tx: -80px; --ty: 0px;">
+        <div class="nav-item" data-section="tips" >
             <span>Tips</span>
         </div>
     </div>
